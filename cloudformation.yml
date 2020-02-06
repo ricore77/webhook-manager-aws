@@ -1,0 +1,6 @@
+curl -XPUT "http://localhost:9200/movies/movie/1" -d'
+{
+    "title": "The Godfather",
+    "director": "Francis Ford Coppola",
+    "year": 1972
+}'

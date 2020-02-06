@@ -1,0 +1,33 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:5000/",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "WebhookManager": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "AWS_REGION": "sa-east-1",
+        "AWS_SECRET_ACCESS_KEY": "#########",
+        "AWS_ACCESS_KEY_ID": "############",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_NAME": "http://Service.local:80/api/Profile/Test"
+      },
+      "applicationUrl": "http://localhost:5000/"
+    }
+  }
+}

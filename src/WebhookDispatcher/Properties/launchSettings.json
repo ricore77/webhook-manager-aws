@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WebhookDispatcher.Lambda": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "TEST_URI": "http://8b922020.ngrok.io"
+      }
+    }
+  }
+}

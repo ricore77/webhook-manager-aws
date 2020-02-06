@@ -1,0 +1,62 @@
+version: '3.7'
+
+services:
+  mysql:
+    container_name: mycontainername
+    build: ./mysql
+    image: newsql:1.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+    ports:
+      - 3306:3306
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    container_name: elasticsearch
+    environment:
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - esnetwork
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.1
+    container_name: kibana
+    depends_on: 
+      - elastic
+    ports:
+      - 5601:5601
+    networks:
+      - esnetwork
+  cheating:
+    image: cheating:latest
+    build:
+      context: .
+      dockerfile: ./Cheating/Dockerfile
+    networks:
+      - esnetwork
+    environment:
+      - AWS_ACCESS_KEY_ID=################
+      - AWS_SECRET_ACCESS_KEY=#######################
+      - AWS_REGION=us-east-1
+      - ASPNETCORE_ENVIRONMENT=UAT
+      - API_NAME= cheating-app.myapp
+  reverseproxy:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    restart: always
+    networks:
+      - esnetwork
+volumes:
+    esdata:
+        driver: local
+networks:
+    esnetwork:
+        name: app
+        driver: bridge
+        

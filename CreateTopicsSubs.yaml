@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An Amazon DynamoDB trigger that logs the updates made to a table.
+Resources:
+  CreateTopicsSubs:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: >-
+        WebhookDispatcher.Lambda::WebhookDispatcher.Lambda.SetupInfraFunction::FunctionHandler
+      Runtime: dotnetcore2.1
+      CodeUri: .
+      Description: An Amazon DynamoDB trigger that logs the updates made to a table.
+      MemorySize: 128
+      Timeout: 3
+      Role: 'arn:aws:iam::248026835750:role/service-role/LambdaSQSAndDynamoDBRole'
+      Events:
+        DynamoDB1:
+          Type: DynamoDB
+          Properties:
+            Stream:
+              'Fn::GetAtt':
+                - Table1
+                - StreamArn
+            StartingPosition: TRIM_HORIZON
+            BatchSize: 100
+  Table1:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE

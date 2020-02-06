@@ -1,0 +1,98 @@
+--- 
+Resources: 
+  ApplicationTable: 
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: Id
+          AttributeType: S
+      KeySchema: 
+        - 
+          AttributeName: Id
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: Application
+    Type: "AWS::DynamoDB::Table"
+  NotificationTable: 
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: Id
+          AttributeType: S
+      KeySchema: 
+        - 
+          AttributeName: Id
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: Notification
+    Type: "AWS::DynamoDB::Table"
+  EventAggregateTable: 
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: EventName
+          AttributeType: S
+        - 
+          AttributeName: SubscriptionId
+          AttributeType: S
+        - 
+          AttributeName: ApplicationId
+          AttributeType: S
+      GlobalSecondaryIndexes: 
+        - 
+          IndexName: ApplicationId-Index
+          KeySchema: 
+            - 
+              AttributeName: ApplicationId
+              KeyType: HASH
+          Projection: 
+            ProjectionType: KEYS_ONLY
+          ProvisionedThroughput: 
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      KeySchema: 
+        - 
+          AttributeName: SubscriptionId
+          KeyType: HASH
+        - 
+          AttributeName: EventName
+          KeyType: RANGE
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 4
+      TableName: EventAggregate
+    Type: "AWS::DynamoDB::Table"
+  SubscriptionTable: 
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: Id
+          AttributeType: S
+      KeySchema: 
+        - 
+          AttributeName: Id
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: Subscription
+    Type: "AWS::DynamoDB::Table"
+  NotificationRequestTable: 
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: Id
+          AttributeType: S
+      KeySchema: 
+        - 
+          AttributeName: Id
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 4
+      TableName: NotificationRequest
+    Type: "AWS::DynamoDB::Table"
